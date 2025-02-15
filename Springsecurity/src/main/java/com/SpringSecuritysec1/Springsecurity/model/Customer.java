@@ -1,13 +1,17 @@
 package com.SpringSecuritysec1.Springsecurity.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="customer")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
 
     @Column(name="email")

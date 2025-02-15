@@ -18,3 +18,7 @@ CREATE TABLE customer (
   role varchar(45) NOT NULL,
   PRIMARY KEY (id)
 );
+
+INSERT INTO public.customer
+(id, email, pwd, "role")
+VALUES(1, 'tharunreddyy48@gmail.com', '{noop}Bptppa@1', 'user');
