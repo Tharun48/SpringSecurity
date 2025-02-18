@@ -22,3 +22,19 @@ CREATE TABLE customer (
 INSERT INTO public.customer
 (id, email, pwd, "role")
 VALUES(1, 'tharunreddyy48@gmail.com', '{noop}Bptppa@1', 'user');
+
+
+CREATE TABLE public.authorities (
+	id serial4 NOT NULL,
+	customer_id int4 NULL,
+	name varchar(255) NULL,
+	CONSTRAINT authorities_pkey PRIMARY KEY (id),
+	CONSTRAINT authorities_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(id)
+);
+
+INSERT INTO public.authorities
+(id, customer_id, "name")
+VALUES(1, 1, 'ROLE_VIEW_BALANCE');
+INSERT INTO public.authorities
+(id, customer_id, "name")
+VALUES(2, 1, 'VIEW_ACCOUNT');

@@ -19,7 +19,7 @@ public class SpringSecurityConfiguraration {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         HttpSecurity httpSecurity = http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/account").hasRole("VIEW_ACCOUNT")
+                        .requestMatchers("/account").hasAuthority("VIEW_ACCOUNT")
                         .requestMatchers("/balance" ).hasRole("VIEW_BALANCE")
                         .requestMatchers("/card").hasRole("VIEW_CARD")
                         .requestMatchers("/loans").hasRole("VIEW_LOANS")

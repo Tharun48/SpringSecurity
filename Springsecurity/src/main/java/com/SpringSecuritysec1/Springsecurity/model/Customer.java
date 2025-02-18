@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -22,5 +24,9 @@ public class Customer {
 
     @Column(name="role")
     private String role;
+
+    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+    public Set<Authorities> authoritiesSet;
+
 
 }
