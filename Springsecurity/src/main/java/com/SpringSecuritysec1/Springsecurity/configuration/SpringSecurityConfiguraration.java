@@ -1,5 +1,7 @@
 package com.SpringSecuritysec1.Springsecurity.configuration;
 
+import com.SpringSecuritysec1.Springsecurity.filter.LoggingInfoFilter;
+import com.SpringSecuritysec1.Springsecurity.filter.RequestingValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -18,11 +21,13 @@ public class SpringSecurityConfiguraration {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         HttpSecurity httpSecurity = http.csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new RequestingValidationBeforeFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new LoggingInfoFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/account").hasRole("VIEW_ACCOUNT")
-                        .requestMatchers("/balance" ).hasRole("VIEW_BALANCE")
-                        .requestMatchers("/card").hasRole("VIEW_CARD")
-                        .requestMatchers("/loans").hasRole("VIEW_LOANS")
+                        .requestMatchers("/account").hasAuthority("VIEW_ACCOUNT")
+                        .requestMatchers("/balance" ).hasAuthority("VIEW_BALANCE")
+                        .requestMatchers("/card").hasAuthority("VIEW_CARD")
+                        .requestMatchers("/loans").hasAuthority("VIEW_LOANS")
                         .requestMatchers("/contact", "/error", "/notices").permitAll()
                         .requestMatchers("/register").permitAll()
                 );
