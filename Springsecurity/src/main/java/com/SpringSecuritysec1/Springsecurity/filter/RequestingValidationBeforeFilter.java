@@ -31,9 +31,7 @@ public class RequestingValidationBeforeFilter implements Filter {
 
         HttpServletRequest httprequest = (HttpServletRequest) request;
         HttpServletResponse httpresponse = (HttpServletResponse) response;
-
         String header = httprequest.getHeader("Authorization");
-
         if(header!=null) {
             header=header.trim();
             if(header.toLowerCase().startsWith("basic")) {

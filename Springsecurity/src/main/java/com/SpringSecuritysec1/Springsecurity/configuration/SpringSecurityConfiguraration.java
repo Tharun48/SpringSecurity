@@ -1,5 +1,7 @@
 package com.SpringSecuritysec1.Springsecurity.configuration;
 
+import com.SpringSecuritysec1.Springsecurity.filter.JwtTokenGeneratorFilter;
+import com.SpringSecuritysec1.Springsecurity.filter.JwtTokenValidatorFilter;
 import com.SpringSecuritysec1.Springsecurity.filter.LoggingInfoFilter;
 import com.SpringSecuritysec1.Springsecurity.filter.RequestingValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,8 @@ public class SpringSecurityConfiguraration {
         HttpSecurity httpSecurity = http.csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new RequestingValidationBeforeFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new LoggingInfoFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JwtTokenGeneratorFilter(),BasicAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenValidatorFilter(),BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/account").hasAuthority("VIEW_ACCOUNT")
                         .requestMatchers("/balance" ).hasAuthority("VIEW_BALANCE")
