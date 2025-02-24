@@ -20,6 +20,11 @@ import java.util.Date;
 public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getRequestURI();
+        if(path.equals("/apiLogin")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String header = request.getHeader("Authorization");
         header = header.trim();
         if(header.startsWith("Basic")) {
@@ -39,7 +44,7 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
                                 .claim("username", authentication.getName())
                                 .claim("authorities",authorities.toString())
                                 .issuedAt(new Date())
-                                .expiration(new Date(new Date().getTime() + 60000000))
+                                .expiration(new Date(new Date().getTime() + 600000))
                                 .signWith(secretKey).compact();
                         response.setHeader("Authorization",jwt);
                     }

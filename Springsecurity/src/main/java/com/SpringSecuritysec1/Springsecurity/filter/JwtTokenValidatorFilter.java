@@ -2,6 +2,7 @@ package com.SpringSecuritysec1.Springsecurity.filter;
 
 import com.SpringSecuritysec1.Springsecurity.constants.ApplicationConstants;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
@@ -26,6 +27,11 @@ import java.util.List;
 public class JwtTokenValidatorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getRequestURI();
+        if(path.equals("/apiLogin")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String header = request.getHeader(ApplicationConstants.JWT_HEADER);
         try{
             Environment env = getEnvironment();
@@ -46,8 +52,8 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
                 }
             }
         }
-        catch (Exception e){
-            throw new BadCredentialsException("Token provided is wrong");
+        catch (ExpiredJwtException e){
+            throw new BadCredentialsException(e.getMessage());
         }
         filterChain.doFilter(request,response);
     }

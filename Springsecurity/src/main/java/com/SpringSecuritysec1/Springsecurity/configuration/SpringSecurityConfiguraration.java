@@ -6,6 +6,8 @@ import com.SpringSecuritysec1.Springsecurity.filter.LoggingInfoFilter;
 import com.SpringSecuritysec1.Springsecurity.filter.RequestingValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -32,8 +34,10 @@ public class SpringSecurityConfiguraration {
                         .requestMatchers("/balance" ).hasAuthority("VIEW_BALANCE")
                         .requestMatchers("/card").hasAuthority("VIEW_CARD")
                         .requestMatchers("/loans").hasAuthority("VIEW_LOANS")
+                        .requestMatchers("/customer/{customerId}").authenticated()
                         .requestMatchers("/contact", "/error", "/notices").permitAll()
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/apiLogin").permitAll()
                 );
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
@@ -60,6 +64,16 @@ public class SpringSecurityConfiguraration {
     @Bean
     public CompromisedPasswordChecker compromisedPasswordChecker() {
         return new HaveIBeenPwnedRestApiPasswordChecker();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(EazyBankUserDetailsService userDetailsService,
+                                                       PasswordEncoder passwordEncoder) {
+        EasyBankAuthenticationProvider authenticationProvider =
+                new EasyBankAuthenticationProvider(userDetailsService, passwordEncoder);
+        ProviderManager providerManager = new ProviderManager(authenticationProvider);
+        providerManager.setEraseCredentialsAfterAuthentication(false);
+        return  providerManager;
     }
 
 

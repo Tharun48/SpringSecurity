@@ -38,3 +38,12 @@ VALUES(1, 1, 'ROLE_VIEW_BALANCE');
 INSERT INTO public.authorities
 (id, customer_id, "name")
 VALUES(2, 1, 'VIEW_ACCOUNT');
+
+
+CREATE TABLE public.contact (
+	id serial4 NOT NULL,
+	contact_name varchar(45) NOT NULL,
+	subject varchar(80) NOT NULL,
+	message varchar(200) NOT NULL,
+	CONSTRAINT contact_pkey PRIMARY KEY (id)
+);
