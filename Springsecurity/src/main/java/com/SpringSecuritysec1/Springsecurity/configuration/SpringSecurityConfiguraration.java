@@ -9,12 +9,8 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -45,20 +41,6 @@ public class SpringSecurityConfiguraration {
         http.httpBasic(withDefaults());
         return http.build();
     }
-
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-        ClientRegistration github = clientRegistrationRepositoryGithub();
-        return new InMemoryClientRegistrationRepository(github);
-    }
-
-    private ClientRegistration clientRegistrationRepositoryGithub() {
-        ClientRegistration github = CommonOAuth2Provider.GITHUB.getBuilder("github").clientId("Ov23liZvBwVQ1ZLGbOgc").clientSecret("df850838caaeeba422f47746180fb78afce4d7ee").build();
-        return github;
-    }
-
-
-
 
 
 
