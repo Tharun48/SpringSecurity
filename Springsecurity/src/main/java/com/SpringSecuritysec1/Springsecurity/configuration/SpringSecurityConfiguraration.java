@@ -49,8 +49,7 @@ public class SpringSecurityConfiguraration {
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         ClientRegistration github = clientRegistrationRepositoryGithub();
-        ClientRegistration google = clientRegistrationRepositoryGoogle();
-        return new InMemoryClientRegistrationRepository(github,google);
+        return new InMemoryClientRegistrationRepository(github);
     }
 
     private ClientRegistration clientRegistrationRepositoryGithub() {
@@ -58,10 +57,7 @@ public class SpringSecurityConfiguraration {
         return github;
     }
 
-    private ClientRegistration clientRegistrationRepositoryGoogle() {
-        ClientRegistration google = CommonOAuth2Provider.GOOGLE.getBuilder("google").clientId("446605117599-lp6t46rjhmn5lhvsdtd7kdstnjj8gqmi.apps.googleusercontent.com").clientSecret("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").build();
-        return google;
-    }
+
 
 
 
