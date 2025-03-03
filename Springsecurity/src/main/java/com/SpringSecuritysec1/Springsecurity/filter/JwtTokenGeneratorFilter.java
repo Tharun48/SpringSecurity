@@ -25,7 +25,7 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        String header = request.getHeader("Authorization");
+        String header = request.getHeader(ApplicationConstants.JWT_HEADER);
         header = header.trim();
         if(header.startsWith("Basic")) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
