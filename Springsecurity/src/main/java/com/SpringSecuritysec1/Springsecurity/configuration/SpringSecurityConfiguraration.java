@@ -36,7 +36,6 @@ public class SpringSecurityConfiguraration {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/apiLogin").permitAll()
                 );
-        http.oauth2Login(withDefaults());
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();
