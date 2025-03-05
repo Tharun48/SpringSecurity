@@ -9,8 +9,12 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -36,10 +40,31 @@ public class SpringSecurityConfiguraration {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/apiLogin").permitAll()
                 );
+        http.oauth2Login(withDefaults());
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();
     }
+
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        ClientRegistration github = getClientRegistrationgithub();
+        ClientRegistration google = getClientRegistrationgoogle();
+        return new InMemoryClientRegistrationRepository(github,google);
+    }
+
+    private ClientRegistration getClientRegistrationgithub() {
+        ClientRegistration github = CommonOAuth2Provider.GITHUB.getBuilder("github").clientId("Ov23liZvBwVQ1ZLGbOgc").clientSecret("910adf85cde4cfc887732a370a127a121a2d0c80").build();
+        return github;
+    }
+
+    private ClientRegistration getClientRegistrationgoogle() {
+        ClientRegistration google = CommonOAuth2Provider.GOOGLE.getBuilder("google").clientId("446605117599-lp6t46rjhmn5lhvsdtd7kdstnjj8gqmi.apps.googleusercontent.com").clientSecret("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").build();
+        return google;
+    }
+
+
+
 
 
 
